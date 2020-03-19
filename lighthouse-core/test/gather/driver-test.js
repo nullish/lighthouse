@@ -133,7 +133,7 @@ async function flushAllTimersAndMicrotasks(ms = 1000) {
  * @property {(...args: RecursivePartial<Parameters<Driver['goOnline']>>) => ReturnType<Driver['goOnline']>} goOnline
 */
 
-/** @typedef {Driver & DriverMockMethods} TestDriver */
+/** @typedef {Omit<Driver, keyof DriverMockMethods> & DriverMockMethods} TestDriver */
 
 /** @type {TestDriver} */
 let driver;
@@ -512,6 +512,7 @@ describe('.gotoURL', () => {
     }
     const replayConnection = new ReplayConnection();
 
+    // @ts-ignore: Coerce to TestDriver for looser typing in function parameters.
     const driver = /** @type {TestDriver} */ (new Driver(replayConnection));
 
     // Redirect in log will go through
