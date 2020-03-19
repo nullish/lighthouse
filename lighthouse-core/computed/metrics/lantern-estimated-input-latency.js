@@ -42,7 +42,7 @@ class LanternEstimatedInputLatency extends LanternMetric {
 
   /**
    * @param {LH.Gatherer.Simulation.Result} simulation
-   * @param {any} extras
+   * @param {import('./lantern-metric.js').Extras} extras
    * @return {LH.Gatherer.Simulation.Result}
    */
   static getEstimateFromSimulation(simulation, extras) {

@@ -15,6 +15,15 @@ const LoadSimulator = require('../load-simulator.js');
 /** @typedef {import('../../lib/dependency-graph/network-node')} NetworkNode */
 /** @typedef {import('../../lib/dependency-graph/simulator/simulator')} Simulator */
 
+/**
+ * @typedef Extras
+ * @property {boolean} optimistic
+ * @property {LH.Artifacts.LanternMetric} fcpResult
+ * @property {LH.Artifacts.LanternMetric} fmpResult
+ * @property {LH.Artifacts.LanternMetric} interactiveResult
+ * @property {{speedIndex: number}} speedline
+ */
+
 class LanternMetricArtifact {
   /**
    * @param {Node} dependencyGraph
@@ -75,7 +84,7 @@ class LanternMetricArtifact {
 
   /**
    * @param {LH.Gatherer.Simulation.Result} simulationResult
-   * @param {any=} extras
+   * @param {Extras} extras
    * @return {LH.Gatherer.Simulation.Result}
    */
   static getEstimateFromSimulation(simulationResult, extras) { // eslint-disable-line no-unused-vars

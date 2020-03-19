@@ -64,7 +64,7 @@ class LanternInteractive extends LanternMetric {
 
   /**
    * @param {LH.Gatherer.Simulation.Result} simulationResult
-   * @param {any} extras
+   * @param {import('./lantern-metric.js').Extras} extras
    * @return {LH.Gatherer.Simulation.Result}
    */
   static getEstimateFromSimulation(simulationResult, extras) {
