@@ -212,7 +212,6 @@ const expectations = [
           },
         },
         'uses-responsive-images': {
-          displayValue: 'Potential savings of 82\xa0KB',
           details: {
             overallSavingsBytes: '82000 +/- 1000',
             items: {
