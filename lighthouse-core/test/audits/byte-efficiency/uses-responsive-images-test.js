@@ -41,7 +41,7 @@ describe('Page uses responsive images', () => {
         ViewportDimensions: {
           innerWidth: 1000,
           innerHeight: 1000,
-          devicePixelRatio: data.devicePixelRatio || 1
+          devicePixelRatio: data.devicePixelRatio || 1,
         },
         ImageElements: [
           generateImage(
