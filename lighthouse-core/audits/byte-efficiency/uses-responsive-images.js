@@ -48,22 +48,22 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
 
   /**
    * @param {LH.Artifacts.ImageElement} image
-   * @param {LH.Artifacts.ViewportDimensions} viewport
+   * @param {LH.Artifacts.ViewportDimensions} ViewportDimensions
    * @return {null|Error|LH.Audit.ByteEfficiencyItem};
    */
-  static computeWaste(image, viewport) {
+  static computeWaste(image, ViewportDimensions) {
     // Nothing can be done without network info.
     if (!image.resourceSize) {
       return null;
     }
 
     let usedPixels = image.displayedWidth * image.displayedHeight *
-      Math.pow(viewport.devicePixelRatio, 2);
+      Math.pow(ViewportDimensions.devicePixelRatio, 2);
     // If the image has 0 dimensions, it's probably hidden/offscreen, so we'll be as forgiving as possible
     // and assume it's the size of two viewports. See https://github.com/GoogleChrome/lighthouse/issues/7236
     if (!usedPixels) {
-      const viewportWidth = viewport.innerWidth;
-      const viewportHeight = viewport.innerHeight * 2;
+      const viewportWidth = ViewportDimensions.innerWidth;
+      const viewportHeight = ViewportDimensions.innerHeight * 2;
       const imageAspectRatio = image.naturalWidth / image.naturalHeight;
       const viewportAspectRatio = viewportWidth / viewportHeight;
       let usedViewportWidth = viewportWidth;
@@ -75,7 +75,7 @@ class UsesResponsiveImages extends ByteEfficiencyAudit {
       }
 
       usedPixels = usedViewportWidth * usedViewportHeight *
-        Math.pow(viewport.devicePixelRatio, 2);
+        Math.pow(ViewportDimensions.devicePixelRatio, 2);
     }
 
     const url = URL.elideDataURI(image.src);

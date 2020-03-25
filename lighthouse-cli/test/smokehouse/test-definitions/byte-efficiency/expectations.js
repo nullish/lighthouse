@@ -213,7 +213,7 @@ const expectations = [
         },
         'uses-responsive-images': {
           details: {
-            overallSavingsBytes: '82000 +/- 1000',
+            overallSavingsBytes: '82000 +/- 5000',
             items: {
               0: {wastedPercent: '45 +/- 5', url: /lighthouse-1024x680.jpg/},
               2: {wastedPercent: '72 +/- 5', url: /lighthouse-2048x1356.webp\?size0/},
