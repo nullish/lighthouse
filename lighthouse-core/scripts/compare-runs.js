@@ -7,7 +7,7 @@
 
 // Example:
 //     node lighthouse-core/scripts/compare-runs.js --name my-collection --collect -n 3 --lh-flags='--only-audits=unminified-javascript' --urls https://www.example.com https://www.nyt.com
-//     node lighthouse-core/scripts/compare-runs.js --name my-collection --summarize --measure-filter 'loadPage|connect'
+//     node lighthouse-core/scripts/compare-runs.js --name my-collection --summarize --filter 'loadPage|connect'
 //     node lighthouse-core/scripts/compare-runs.js --name base --name pr --compare
 
 // The script will report both timings and perf metric results. View just one of them but using --filter:
@@ -20,7 +20,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const yargs = require('yargs');
 
-const {ProgressLogger} = require('./lantern/collect/common.js');
+const { ProgressLogger } = require('./lantern/collect/common.js');
 
 const LH_ROOT = `${__dirname}/../..`;
 const ROOT_OUTPUT_DIR = `${LH_ROOT}/timings-data`;
@@ -49,7 +49,7 @@ const argv = yargs
     'desc': 'Set to override default ascending sort',
   })
   .string('filter')
-  .alias({'gather': 'G', 'audit': 'A'})
+  .alias({ 'gather': 'G', 'audit': 'A' })
   .default('report-exclude', 'key|min|max|stdev|^n$')
   .default('delta-property-sort', 'mean')
   .default('output', 'table')
@@ -117,15 +117,17 @@ function round(value) {
  * @return {string}
  */
 function getProgressBar(i, total = argv.n * argv.urls.length) {
-  return `${i} / ${total} [` + new Array(Math.round(i * 40 / total)).fill('▄').join('').padEnd(40) + ']';
+  const bars = new Array(Math.round(i * 40 / total)).fill('▄').join('').padEnd(40);
+  return `${i + 1} / ${total} [${bars}]`;
 }
 
 async function gather() {
   const outputDir = dir(argv.name);
   if (fs.existsSync(outputDir)) {
+    // eslint-disable-next-line no-console
     console.log('Collection already started - resuming.');
   }
-  await mkdir(outputDir, {recursive: true});
+  await mkdir(outputDir, { recursive: true });
 
   const progress = new ProgressLogger();
   progress.log('Gathering…');
@@ -133,13 +135,13 @@ async function gather() {
   let progressCount = 0;
   for (const url of argv.urls) {
     const urlFolder = `${outputDir}/${urlToFolder(url)}`;
-    await mkdir(urlFolder, {recursive: true});
+    await mkdir(urlFolder, { recursive: true });
 
     for (let i = 0; i < argv.n; i++) {
       const gatherDir = `${urlFolder}/${i}`;
 
-      progressCount++;
       progress.progress(getProgressBar(progressCount));
+      progressCount++;
 
       // Skip if already gathered. Allows for restarting collection.
       if (fs.existsSync(gatherDir)) continue;
@@ -172,13 +174,16 @@ async function audit() {
       progress.progress(getProgressBar(progressCount));
       progressCount++;
 
+      // Skip if already audited. Allows for restarting collection.
+      if (fs.existsSync(outputPath)) continue;
+
       if (fs.existsSync(outputPath)) continue;
       const cmd = [
         'node',
         `${LH_ROOT}/lighthouse-cli`,
         url,
         `--audit-mode=${gatherDir}`,
-        `--output-path=${urlDir}/lhr-${i}.json`,
+        `--output-path=${outputPath}`,
         '--output=json',
         argv.lhFlags,
       ].join(' ');
@@ -212,8 +217,9 @@ function aggregateResults(name) {
       {};
     const allEntries = {
       metric: Object.entries(metrics).filter(([name]) => !name.endsWith('Ts')),
-      timing: lhr.timing.entries.map(entry => ([entry.name, entry.duration])),
+      // timing: lhr.timing.entries.map(entry => ([entry.name, entry.duration])),
     };
+    console.log(Object.keys(lhr.audits))
 
     Object.entries(allEntries).forEach(([kind, entries]) => {
       // Group the durations of each entry of the same name.
@@ -265,21 +271,21 @@ function aggregateResults(name) {
 }
 
 /**
- * @param {Array<{name: string}>} results
+ * @param {Array<{key: string, name: string}>} results
  */
 function filter(results) {
   const includeFilter = argv.filter ? new RegExp(argv.filter, 'i') : null;
 
   results.forEach((result, i) => {
+    if (includeFilter && !includeFilter.test(result.key)) {
+      delete results[i];
+    }
+
     for (const propName of Object.keys(result)) {
       if (reportExcludeRegex && reportExcludeRegex.test(propName)) {
         // @ts-ignore: propName is a key.
         delete result[propName];
       }
-    }
-
-    if (includeFilter && !includeFilter.test(result.name)) {
-      delete results[i];
     }
   });
 }
@@ -335,6 +341,7 @@ function compare() {
     const max = compareValues(baseResult && baseResult.max, otherResult && otherResult.max);
 
     return {
+      'key': someResult.key,
       'name': someResult.name,
       'url': someResult.url,
       'mean': mean.description,
