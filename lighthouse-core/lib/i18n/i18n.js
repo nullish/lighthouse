@@ -470,18 +470,20 @@ function replaceIcuMessageInstanceIds(inputObject, locale) {
 
       // Check to see if the value in the LHR looks like a string reference. If it is, replace it.
       if (typeof value === 'string' && isIcuMessage(value)) {
-        const {icuMessageInstance, formattedString} = _resolveIcuMessageInstanceId(value, locale);
-        const messageInstancesInLHR = icuMessagePaths[icuMessageInstance.icuMessageId] || [];
-        const currentPathAsString = _formatPathAsString(currentPathInLHR);
+        try {
+          const {icuMessageInstance, formattedString} = _resolveIcuMessageInstanceId(value, locale);
+          const messageInstancesInLHR = icuMessagePaths[icuMessageInstance.icuMessageId] || [];
+          const currentPathAsString = _formatPathAsString(currentPathInLHR);
 
-        messageInstancesInLHR.push(
-          icuMessageInstance.values ?
-            {values: icuMessageInstance.values, path: currentPathAsString} :
-            currentPathAsString
-        );
+          messageInstancesInLHR.push(
+            icuMessageInstance.values ?
+              {values: icuMessageInstance.values, path: currentPathAsString} :
+              currentPathAsString
+          );
 
-        subObject[property] = formattedString;
-        icuMessagePaths[icuMessageInstance.icuMessageId] = messageInstancesInLHR;
+          subObject[property] = formattedString;
+          icuMessagePaths[icuMessageInstance.icuMessageId] = messageInstancesInLHR;
+        } catch (e) {}
       } else {
         replaceInObject(value, icuMessagePaths, currentPathInLHR);
       }
