@@ -130,13 +130,16 @@ async function gather() {
   const progress = new ProgressLogger();
   progress.log('Gathering…');
 
+  let progressCount = 0;
   for (const url of argv.urls) {
     const urlFolder = `${outputDir}/${urlToFolder(url)}`;
     await mkdir(urlFolder, {recursive: true});
 
     for (let i = 0; i < argv.n; i++) {
       const gatherDir = `${urlFolder}/${i}`;
-      progress.progress(getProgressBar(i));
+
+      progressCount++;
+      progress.progress(getProgressBar(progressCount));
 
       // Skip if already gathered. Allows for restarting collection.
       if (fs.existsSync(gatherDir)) continue;
@@ -159,12 +162,17 @@ async function audit() {
   const progress = new ProgressLogger();
   progress.log('Auditing…');
 
+  let progressCount = 0;
   for (const url of argv.urls) {
     const urlDir = `${outputDir}/${urlToFolder(url)}`;
     for (let i = 0; i < argv.n; i++) {
       const gatherDir = `${urlDir}/${i}`;
-      progress.progress(getProgressBar(i));
+      const outputPath = `${urlDir}/lhr-${i}.json`;
 
+      progress.progress(getProgressBar(progressCount));
+      progressCount++;
+
+      if (fs.existsSync(outputPath)) continue;
       const cmd = [
         'node',
         `${LH_ROOT}/lighthouse-cli`,
@@ -174,7 +182,11 @@ async function audit() {
         '--output=json',
         argv.lhFlags,
       ].join(' ');
-      await exec(cmd);
+      try {
+        await exec(cmd);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
   progress.closeProgress();

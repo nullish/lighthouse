@@ -15,13 +15,13 @@ node lighthouse-core/scripts/compare-runs.js --name my-collection --collect -n 3
 
 ...for specific URL
 ```sh
-node lighthouse-core/scripts/get-median-lhr.js timings-data/my-collection/https___www_example_com
+node lighthouse-core/scripts/median-lhr/get-median-lhr.js timings-data/my-collection/https___www_example_com
 ```
 
 ...for many URLs
 ```sh
-for file in timings-data/my-collection/*; do
-  node lighthouse-core/scripts/get-median-lhr.js $file > timings-data/my-collection/`basename $file`-median-lhr.json
+for file in timings-data/my-collection/*/; do
+  node lighthouse-core/scripts/median-lhr/get-median-lhr.js $file > timings-data/my-collection/`basename $file`-median-lhr.json
 done
 ```
 

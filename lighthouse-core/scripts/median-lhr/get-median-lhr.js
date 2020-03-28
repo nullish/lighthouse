@@ -22,7 +22,7 @@ node lighthouse-core/scripts/get-median-lhr.js timings-data/my-collection/https_
 
 ...for many URLs
 for file in timings-data/my-collection/*; do
-  node lighthouse-core/scripts/get-median-lhr.js $file > timings-data/my-collection/`basename $file`-median-lhr.json
+  node lighthouse-core/scripts/get-median-lhr.js $file > timings-data/11ty-collection/`basename $file`-median-lhr.json
 done
 */
 
