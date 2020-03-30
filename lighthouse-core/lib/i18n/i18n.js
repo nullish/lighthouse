@@ -269,16 +269,7 @@ function _preformatValues(icuMessage, messageFormatter, values) {
  */
 
 /** @type {Map<string, IcuMessageInstance[]>} */
-let _icuMessageInstanceMap = new Map();
-
-function getIcuMessageInstanceMap() {
-  return _icuMessageInstanceMap;
-}
-
-/** @param {Map<string, IcuMessageInstance[]>} map */
-function setIcuMessageInstanceMap(map) {
-  _icuMessageInstanceMap = map;
-}
+const _icuMessageInstanceMap = new Map();
 
 const _ICUMsgNotFoundMsg = 'ICU message not found in destination locale';
 /**
@@ -479,20 +470,18 @@ function replaceIcuMessageInstanceIds(inputObject, locale) {
 
       // Check to see if the value in the LHR looks like a string reference. If it is, replace it.
       if (typeof value === 'string' && isIcuMessage(value)) {
-        try {
-          const {icuMessageInstance, formattedString} = _resolveIcuMessageInstanceId(value, locale);
-          const messageInstancesInLHR = icuMessagePaths[icuMessageInstance.icuMessageId] || [];
-          const currentPathAsString = _formatPathAsString(currentPathInLHR);
+        const {icuMessageInstance, formattedString} = _resolveIcuMessageInstanceId(value, locale);
+        const messageInstancesInLHR = icuMessagePaths[icuMessageInstance.icuMessageId] || [];
+        const currentPathAsString = _formatPathAsString(currentPathInLHR);
 
-          messageInstancesInLHR.push(
-            icuMessageInstance.values ?
-              {values: icuMessageInstance.values, path: currentPathAsString} :
-              currentPathAsString
-          );
+        messageInstancesInLHR.push(
+          icuMessageInstance.values ?
+            {values: icuMessageInstance.values, path: currentPathAsString} :
+            currentPathAsString
+        );
 
-          subObject[property] = formattedString;
-          icuMessagePaths[icuMessageInstance.icuMessageId] = messageInstancesInLHR;
-        } catch (e) {}
+        subObject[property] = formattedString;
+        icuMessagePaths[icuMessageInstance.icuMessageId] = messageInstancesInLHR;
       } else {
         replaceInObject(value, icuMessagePaths, currentPathInLHR);
       }
@@ -531,6 +520,4 @@ module.exports = {
   isIcuMessage,
   collectAllCustomElementsFromICU,
   registerLocaleData,
-  getIcuMessageInstanceMap,
-  setIcuMessageInstanceMap,
 };
