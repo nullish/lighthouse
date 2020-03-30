@@ -216,8 +216,8 @@ const expectations = [
             overallSavingsBytes: '82000 +/- 5000',
             items: {
               0: {wastedPercent: '45 +/- 5', url: /lighthouse-1024x680.jpg/},
-              2: {wastedPercent: '72 +/- 5', url: /lighthouse-2048x1356.webp\?size0/},
-              1: {wastedPercent: '45 +/- 5', url: /lighthouse-480x320.webp/},
+              1: {wastedPercent: '72 +/- 5', url: /lighthouse-2048x1356.webp\?size0/},
+              2: {wastedPercent: '45 +/- 5', url: /lighthouse-480x320.webp/},
               length: 3,
             },
           },
