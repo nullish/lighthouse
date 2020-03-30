@@ -124,11 +124,4 @@ async function main() {
   log.closeProgress();
 }
 
-if (require.main === module) {
-  main();
-} else {
-  module.exports = {
-    getPercentileBy,
-  };
-}
-
+main();
