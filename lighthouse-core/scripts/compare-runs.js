@@ -212,16 +212,16 @@ function aggregateResults(name) {
 
   for (const lhrPath of glob.sync(`${outputDir}/**/lhr-*.json`)) {
     const lhrJson = fs.readFileSync(lhrPath, 'utf-8');
-    if (!lhrJson) {
+    /** @type {LH.Result} */
+    const lhr = lhrJson && JSON.parse(lhrJson);
+    if (!lhr || !lhr.audits) {
       console.warn(`could not parse ${lhrPath}`);
       continue;
     }
 
-    /** @type {LH.Result} */
-    const lhr = JSON.parse(lhrJson);
     if (argv.urlFilter && !lhr.requestedUrl.includes(argv.urlFilter)) continue;
 
-    const metrics = lhr.audits.metrics ?
+    const metrics = lhr.audits.metrics && lhr.audits.metrics.details ?
     /** @type {!LH.Audit.Details.Table} */ (lhr.audits.metrics.details).items[0] :
       {};
     const allEntries = {
