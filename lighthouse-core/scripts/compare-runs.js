@@ -180,7 +180,6 @@ async function audit() {
       // Skip if already audited. Allows for restarting collection.
       if (fs.existsSync(outputPath)) continue;
 
-      if (fs.existsSync(outputPath)) continue;
       const cmd = [
         'node',
         `${LH_ROOT}/lighthouse-cli`,
@@ -190,10 +189,11 @@ async function audit() {
         '--output=json',
         argv.lhFlags,
       ].join(' ');
+
       try {
         await exec(cmd);
       } catch (e) {
-        console.error(e);
+        console.error('audit error:', e);
       }
     }
   }
