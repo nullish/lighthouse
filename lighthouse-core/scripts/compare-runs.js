@@ -288,9 +288,9 @@ function aggregateResults(name) {
 function filter(results) {
   const includeFilter = argv.filter ? new RegExp(argv.filter, 'i') : null;
 
-  results.forEach((result, i) => {
+  return results.filter(result => {
     if (includeFilter && !includeFilter.test(result.key)) {
-      delete results[i];
+      return false;
     }
 
     for (const propName of Object.keys(result)) {
@@ -299,6 +299,8 @@ function filter(results) {
         delete result[propName];
       }
     }
+
+    return true;
   });
 }
 
@@ -312,8 +314,7 @@ function isNumber(value) {
 
 function summarize() {
   const results = aggregateResults(argv.name);
-  filter(results);
-  print(results);
+  print(filter(results));
 }
 
 /**
@@ -387,8 +388,7 @@ function compare() {
 
     return (argv.desc ? 1 : -1) * (aValue - bValue);
   });
-  filter(results);
-  print(results);
+  print(filter(results));
 }
 
 /**
