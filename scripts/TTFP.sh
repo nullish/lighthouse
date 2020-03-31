@@ -1,0 +1,29 @@
+#!/bin/bash
+# Run Lighthouse CLI commmands to get reports for different template types on live and CDs
+lighthouse --output json --output-path ./reports/cd1-home.json https://wwwcd1.shu.ac.uk/
+lighthouse --output json --output-path ./reports/cd2-home.json https://wwwcd2.shu.ac.uk/
+lighthouse --output json --output-path ./reports/cd3-home.json https://wwwcd2.shu.ac.uk/
+lighthouse --output json --output-path ./reports/live-home.json https://www.shu.ac.uk/
+lighthouse --output json --output-path ./reports/cd1-content-legacy.json https://wwwcd1.shu.ac.uk/about-us/academic-departments/institute-of-education/about-us
+lighthouse --output json --output-path ./reports/cd2-content-legacy.json https://wwwcd2.shu.ac.uk/about-us/academic-departments/institute-of-education/about-us
+lighthouse --output json --output-path ./reports/cd3-content-legacy.json https://wwwcd3.shu.ac.uk/about-us/academic-departments/institute-of-education/about-us
+lighthouse --output json --output-path ./reports/live-content-legacy.json https://www.shu.ac.uk/about-us/academic-departments/institute-of-education/about-us
+lighthouse --output json --output-path ./reports/cd1-content-design.json https://wwwcd1.shu.ac.uk/research/quality/ethics-and-integrity/commitment-to-the-concordat-to-support-research-integrity
+lighthouse --output json --output-path ./reports/cd2-content-design.json https://wwwcd2.shu.ac.uk/research/quality/ethics-and-integrity/commitment-to-the-concordat-to-support-research-integrity
+lighthouse --output json --output-path ./reports/cd3-content-design.json https://wwwcd3.shu.ac.uk/research/quality/ethics-and-integrity/commitment-to-the-concordat-to-support-research-integrity
+lighthouse --output json --output-path ./reports/live-content-design.json https://www.shu.ac.uk/research/quality/ethics-and-integrity/commitment-to-the-concordat-to-support-research-integrity
+lighthouse --output json --output-path ./reports/cd1-landing-legacy.json https://wwwcd1.shu.ac.uk/about-us
+lighthouse --output json --output-path ./reports/cd2-landing-legacy.json https://wwwcd2.shu.ac.uk/about-us
+lighthouse --output json --output-path ./reports/cd3-landing-legacy.json https://wwwcd3.shu.ac.uk/about-us
+lighthouse --output json --output-path ./reports/live-landing-legacy.json https://www.shu.ac.uk/about-us
+lighthouse --output json --output-path ./reports/cd1-section-home.json https://wwwcd1.shu.ac.uk/research
+lighthouse --output json --output-path ./reports/cd2-section-home.json https://wwwcd2.shu.ac.uk/research
+lighthouse --output json --output-path ./reports/cd3-section-home.json https://wwwcd3.shu.ac.uk/research
+lighthouse --output json --output-path ./reports/live-section-home.json https://www.shu.ac.uk/research
+lighthouse --output json --output-path ./reports/cd1-interactive.json https://wwwcd1.shu.ac.uk/study-here/accommodation/properties
+lighthouse --output json --output-path ./reports/cd2-interactive.json https://wwwcd2.shu.ac.uk/study-here/accommodation/properties
+lighthouse --output json --output-path ./reports/cd3-interactive.json https://wwwcd3.shu.ac.uk/study-here/accommodation/properties
+lighthouse --output json --output-path ./reports/live-interactive.json https://www.shu.ac.uk/study-here/accommodation/properties
+lighthouse --output json --output-path ./reports/cd1-data-retrieval.json https://wwwcd1.shu.ac.uk/alumni/news
+lighthouse --output json --output-path ./reports/cd2-data-retrieval.json https://wwwcd2.shu.ac.uk/alumni/news
+lighthouse --output json --output-path ./reports/cd3-data-retrieval.json https://wwwcd3.shu.ac.uk/alumni/news
